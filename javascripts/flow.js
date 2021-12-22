@@ -1,8 +1,13 @@
-import { cookie, client, user } from "./dataStructure.js";
+import { Cookie, Client, User } from "./dataStructure.js";
 import { Service } from "./oauth.js";
 
 
+//Step1,初始化实例，以存储数据
+// const cookie = new Cookie();
+const client = new Client();
+const user = new User();
 
+// export {cookie,client,user};
 
 
 
@@ -39,39 +44,10 @@ async function getRAToken() {
     else if (xhr.readyState === 4 && xhr.status === 200) {
         let res = JSON.parse(xhr.response);
         const { accessToken, refreshToken } = { accessToken: res[0]["result"]["access_token"], refreshToken: res[0]["result"]["refresh_token"] };
-        cookie.setRATToken(accessToken, refreshToken);
+        // cookie.setRATToken(accessToken, refreshToken);
+        document.cookie="access_token="+accessToken;
+        document.cookie="refresh_token="+refreshToken;
         return true;
-    }
-}
-//Step4.依据access_token获得所有的资源菜单
-async function getResourceIds() {
-    const { clientId, clientSecret } = client.getClientInfo();
-    const accessToken = cookie.getAccessToken();
-    if (accessToken === null) {
-        console.log("跳转到登录界面，重新获得access_token");
-        return false;
-    } else {
-        const pgfun = 'oauth2.svr_get_access_token_resource';
-        const content = {
-            "access_token": accessToken,
-            "client_id": clientId,
-            "client_secret": clientSecret
-        };
-        console.log(content);
-        const xhr = await Service(pgfun, content);
-        console.log('xhr', xhr);
-        if (xhr.readyState === 4 && xhr.status !== 200) {
-            console.log("access_token失效",xhr);
-            console.log("跳转到登录界面，重新获得access_token");
-            
-            return false;
-        }
-        else if (xhr.readyState === 4 && xhr.status === 200){
-            console.log(xhr.response);
-            let res = JSON.parse(xhr.response);
-            user.updateResourceList(res[0]["result"])
-            return true;
-        }
     }
 }
 
@@ -83,7 +59,13 @@ async function mySubmit(e) {
     if (!setRAT) {
         return;
     }
-    await getResourceIds();
+    else{
+        window.location.href = "resource.html" ;
+    }
+   
+    // if(getResIds){
+        
+    // }
     // if(resourceList === false){
     //     return;
     // }

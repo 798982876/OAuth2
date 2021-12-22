@@ -33,7 +33,7 @@ class Client{
 class User{
     _name = null;
     _password = null;
-    _resourceList = null;
+    // _resourceList = null;
     constructor(name,password){
         this._name = name;
         this._password = password;
@@ -45,19 +45,14 @@ class User{
         this._name = name;
         this._password = password;
     }
-    getReourceList(){
-        return this._resourceList;
-    }
-    updateResourceList(resourceList){
-        this._resourceList = resourceList;
-    }
+    // getReourceList(){
+    //     return this._resourceList;
+    // }
+    // updateResourceList(resourceList){
+    //     this._resourceList = resourceList;
+    // }
 
 }
 
-//Step1,初始化实例，以存储数据
-const cookie = new Cookie();
-const client = new Client();
-const user = new User();
-
-export {cookie,client,user};
+export{Client,Cookie,User}
 
